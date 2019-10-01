@@ -1,4 +1,5 @@
-let historyCode = [];
+let nodejsCodeHistory = [];
+let sorryStatement = "[[;#9933ff;]I am sorry, this command has not been implemented yet.] [[;#4dff4d;]Maybe you can pull a request?]";
 
 function greetings() {
     return ""
@@ -10,6 +11,9 @@ function prompt() {
 
 function commands() {
     return {
+        about: function () {
+            this.echo("[[;#0000ff;]Online terminal], created by [[;#1aff66;]JustSong].");
+        },
         date: function () {
             const date = new Date();
             this.echo(date.toLocaleString());
@@ -18,27 +22,29 @@ function commands() {
             this.echo(value);
         },
         help: function () {
-            this.echo("https://github.com/songwonderful/online-shell");
+            this.echo("This is an online terminal emulator.");
+            this.echo("For more information, visit here:");
+            this.echo("\thttps://github.com/songwonderful/online-shell\n");
         },
         history: function () {
-            this.echo("");
+            this.echo(sorryStatement);
         },
         ls: function () {
-            this.echo("");
+            this.echo(sorryStatement);
         },
         navigation: {},
         node: function () {
             this.push(function (command) {
                 if (command.trim() === "") {
                 } else {
-                    historyCode.push(command);
+                    nodejsCodeHistory.push(command);
                     let result;
                     try {
-                        result = window.eval(historyCode.join("\n"));
-                    } catch (e) {
-                        historyCode.pop();
-                    } finally {
+                        result = window.eval(nodejsCodeHistory.join("\n"));
                         this.echo(String(result));
+                    } catch (e) {
+                        nodejsCodeHistory.pop();
+                        this.echo("[[;red;]" + e.message + "]");
                     }
                 }
             }, {
@@ -49,7 +55,7 @@ function commands() {
             this.echo("");
         },
         uname: function () {
-            this.echo("Online terminal. Created by JustSong.")
+            this.echo("Linux Ubuntu 4.4.0-18362 GNU/Linux. [[i;#808080;](Just for kidding.)]")
         }
     }
 }
