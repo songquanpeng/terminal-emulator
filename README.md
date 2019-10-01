@@ -15,6 +15,8 @@
 |navigation|Website navigation.|
 |node|Node.js interpreter.|
 |pwd|Print working directory.|
+|reload|Reload page.|
+|set|System setting.|
 |uname|Print system info.|
 
 
