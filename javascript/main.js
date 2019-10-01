@@ -8,11 +8,18 @@ function prompt() {
 
 function commands() {
     return {
-        help: function () {
-            this.echo("Help documents.");
+        date: function () {
+            const date = new Date();
+            this.echo(date.toLocaleString());
         },
         echo: function (value) {
             this.echo(value);
+        },
+        help: function () {
+            this.echo("https://github.com/songwonderful/online-shell");
+        },
+        history: function () {
+            this.echo("");
         },
         ls: function () {
             this.echo("");
@@ -21,7 +28,7 @@ function commands() {
             this.echo("");
         },
         uname: function () {
-            this.echo("Online terminal, created by JustSong.")
+            this.echo("Online terminal. Created by JustSong.")
         }
     }
 }
