@@ -86,7 +86,7 @@ function commands() {
         about: function () {
             this.echo("[[;#0000ff;]Online terminal], created by [[;#1aff66;]JustSong].");
         },
-        cat: function(value){
+        cat: function (value) {
             let current = fileSystem;
             let fileArray = [];
             currentWorkingDir.split('/').forEach(function (item) {
@@ -148,7 +148,7 @@ function commands() {
             this.echo(date.toLocaleString());
         },
         echo: function (value) {
-            this.echo(value);
+            this.echo("[[;#ff00ff;]" + value + "]");
         },
         help: function () {
             this.echo("This is an online terminal emulator.");
@@ -160,6 +160,7 @@ function commands() {
             this.echo(sorryStatement);
         },
         ls: function () {
+            this.echo("[[b;#ff00ff;]Name\t\tType]");
             let current = fileSystem;
             currentWorkingDir.split('/').forEach(function (item) {
                 if (item !== "") {
@@ -176,7 +177,39 @@ function commands() {
                 }
             }
         },
-        navigation: {},
+        nav: {
+            open: function (keyword) {
+
+            },
+            save: function (link) {
+                let matchResult = link.toString().match(/https?:\/\/[a-zA-Z0-9\.]*\.[a-zA-Z]*(:[0-9]*)?/);
+                if (matchResult === null) {
+                    this.echo("[[;red;]Not a valid link!]");
+                    return;
+                }
+                let domain = matchResult[0];
+                let savedDomains = [];
+                if (localStorage.getItem("domains") !== null) {
+                    savedDomains = JSON.parse(localStorage.getItem("domains"));
+                }
+                if (!savedDomains.includes(domain)) {
+                    savedDomains.push(domain);
+                    localStorage.setItem("domains", JSON.stringify(savedDomains));
+                    this.echo("[[;#00ff00;]Domain " + domain + " saved.]");
+                } else {
+                    this.echo("[[;#ffff00;]This domain already exists!]");
+                }
+            },
+            list: function () {
+                let savedDomains = JSON.parse(localStorage.getItem("domains"));
+                const that = this;
+                if (savedDomains !== null) {
+                    savedDomains.forEach(function (item) {
+                        that.echo(item);
+                    });
+                }
+            }
+        },
         node: function () {
             this.push(function (command) {
                 if (command.trim() === "") {
@@ -196,7 +229,7 @@ function commands() {
             })
         },
         pwd: function () {
-            this.echo("Current working directory: " + fakePathPrefix + currentWorkingDir);
+            this.echo("Current working directory: [[;#ff00ff;]" + fakePathPrefix + currentWorkingDir + "]");
         },
         reload: function () { // Before reloading, remember to save context.
             reload();

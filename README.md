@@ -14,7 +14,7 @@
 |help|Show help document.|
 |history|Show history.|
 |ls|List contents of current path.|
-|navigation|Website navigation.|
+|nav|Website navigator.|
 |node|Node.js interpreter.|
 |pwd|Print working directory.|
 |reload|Reload page.|
