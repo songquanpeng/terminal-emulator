@@ -1,5 +1,39 @@
 let nodejsCodeHistory = [];
 let sorryStatement = "[[;#9933ff;]I am sorry, this command has not been implemented yet.] [[;#4dff4d;]Maybe you can pull a request?]";
+let fileSystem = {
+    "project": {
+        "python": {
+            "hello.py": `print("Hello World!")`
+        },
+        "nodejs": {
+            "hello.js": `console.log("Hello World!");`
+        },
+        "readme": `This folder contains projects.`
+    },
+    "note": {
+        "studyNote": `I love study`,
+        "gameNote": `Fortnite is the best game in the world.`,
+        "readme": `This folder contains notes.`
+    },
+    "readme": `This is a virtual file system.`
+};
+
+function isDir(path) {
+    let current = fileSystem;
+    path.split('/').forEach(function (item) {
+        if (item !== "") {
+            current = current[item];
+        }
+    });
+    return typeof current === "object";
+}
+
+let currentWorkingDir = localStorage.getItem("currentWorkingDir");
+if (currentWorkingDir === null) {
+    currentWorkingDir = "/";
+    localStorage.setItem("currentWorkingDir", currentWorkingDir);
+}
+let fakePathPrefix;
 
 function init() {
     if (localStorage.getItem("isFirstTimeStart") === null) {
@@ -8,6 +42,18 @@ function init() {
         localStorage.setItem("username", "username");
         localStorage.setItem("hostname", "hostname");
     }
+    let prompt = localStorage.getItem("prompt");
+    let username = localStorage.getItem("username");
+    if (prompt !== "windows") {
+        fakePathPrefix = "/home/" + username;
+    } else {
+        fakePathPrefix = "C:/Users/" + username;
+    }
+}
+
+function reload() {
+    localStorage.setItem("currentWorkingDir", currentWorkingDir);
+    location.reload();
 }
 
 function greetings() {
@@ -17,13 +63,13 @@ function greetings() {
 function prompt() {
     let username = localStorage.getItem("username");
     let hostname = localStorage.getItem("hostname");
-    let promptText = "[[b;green;]" + username + "@" + hostname + "]:[[b;blue;]/home/" + username + "]$ ";
+    let promptText = "[[b;green;]" + username + "@" + hostname + "]:[[b;blue;]/home/" + username + currentWorkingDir + "]$ ";
     let promptOption = localStorage.getItem("prompt");
     switch (promptOption) {
         case "default":
             break;
         case "windows":
-            promptText = "[[b;green;]C:\\Users\\" + username + "]> ";
+            promptText = "[[b;green;]" + fakePathPrefix + currentWorkingDir + "]> ";
             break;
         case "python":
             promptText = "[[b;green;]>>> ]";
@@ -39,6 +85,42 @@ function commands() {
     return {
         about: function () {
             this.echo("[[;#0000ff;]Online terminal], created by [[;#1aff66;]JustSong].");
+        },
+        cd: function (value) {
+            let pathTransferArray = [];
+            let dirArray = [];
+            if (value === "..") {
+                if (currentWorkingDir === "/") {
+                    this.echo("Access denied!");
+                } else {
+                    pathTransferArray = currentWorkingDir;
+                    pathTransferArray = pathTransferArray.split("/");
+                    pathTransferArray.pop();
+                    pathTransferArray.pop();
+                    currentWorkingDir = (pathTransferArray.join("/") + "/");
+                    reload();
+                }
+            } else {
+                let current = fileSystem;
+                currentWorkingDir.split('/').forEach(function (item) {
+                    if (item !== "") {
+                        current = current[item];
+                    }
+                });
+                for (let key in current) {
+                    if (current[key] !== undefined) {
+                        if (typeof current[key] === "object") {
+                            dirArray.push(key);
+                        }
+                    }
+                }
+                if (dirArray.includes(value)) {
+                    currentWorkingDir += (value + "/");
+                    reload();
+                } else {
+                    this.echo("No such dir: " + value);
+                }
+            }
         },
         date: function () {
             const date = new Date();
@@ -57,7 +139,21 @@ function commands() {
             this.echo(sorryStatement);
         },
         ls: function () {
-            this.echo(sorryStatement);
+            let current = fileSystem;
+            currentWorkingDir.split('/').forEach(function (item) {
+                if (item !== "") {
+                    current = current[item];
+                }
+            });
+            for (let key in current) {
+                if (current[key] !== undefined) {
+                    if (typeof current[key] === "object") {
+                        this.echo(key + "\t\tDir");
+                    } else {
+                        this.echo(key + "\t\tFile");
+                    }
+                }
+            }
         },
         navigation: {},
         node: function () {
@@ -79,10 +175,10 @@ function commands() {
             })
         },
         pwd: function () {
-            this.echo("");
+            this.echo("Current working directory: " + fakePathPrefix + currentWorkingDir);
         },
-        reload: function () {
-            location.reload();
+        reload: function () { // Before reloading, remember to save context.
+            reload();
         },
         set: function (para) {
             let key = para.split(" ")[0];

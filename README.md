@@ -6,6 +6,7 @@
 |Command|Description|
 |---|---|
 |about|Show about information.|
+|cd|Change working directory.|
 |clear|Clear the screen.|
 |date|Print current date.|
 |echo|Echo what you have input.|
