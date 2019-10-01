@@ -6,6 +6,7 @@
 |Command|Description|
 |---|---|
 |about|Show about information.|
+|cat|Print file content.|
 |cd|Change working directory.|
 |clear|Clear the screen.|
 |date|Print current date.|
@@ -19,8 +20,6 @@
 |reload|Reload page.|
 |set|System setting.|
 |uname|Print system info.|
-
-
 
 
 ## Reference

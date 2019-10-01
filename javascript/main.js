@@ -86,6 +86,27 @@ function commands() {
         about: function () {
             this.echo("[[;#0000ff;]Online terminal], created by [[;#1aff66;]JustSong].");
         },
+        cat: function(value){
+            let current = fileSystem;
+            let fileArray = [];
+            currentWorkingDir.split('/').forEach(function (item) {
+                if (item !== "") {
+                    current = current[item];
+                }
+            });
+            for (let key in current) {
+                if (current[key] !== undefined) {
+                    if (typeof current[key] === "string") {
+                        fileArray.push(key);
+                    }
+                }
+            }
+            if (fileArray.includes(value)) {
+                this.echo(current[value]);
+            } else {
+                this.echo("No such file: " + value);
+            }
+        },
         cd: function (value) {
             let pathTransferArray = [];
             let dirArray = [];
