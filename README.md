@@ -5,11 +5,14 @@
 ## Supported commands
 |Command|Description|
 |---|---|
+|clear|Clear the screen.|
 |date|Print current date.|
 |echo|Echo what you have input.|
 |help|Show help document.|
 |history|Show history.|
 |ls|List contents of current path.|
+|navigation|Website navigation.|
+|node|Node.js interpreter.|
 |pwd|Print working directory.|
 |uname|Show system info.|
 

@@ -1,3 +1,5 @@
+let historyCode = [];
+
 function greetings() {
     return ""
 }
@@ -24,6 +26,25 @@ function commands() {
         ls: function () {
             this.echo("");
         },
+        navigation: {},
+        node: function () {
+            this.push(function (command) {
+                if (command.trim() === "") {
+                } else {
+                    historyCode.push(command);
+                    let result;
+                    try {
+                        result = window.eval(historyCode.join("\n"));
+                    } catch (e) {
+                        historyCode.pop();
+                    } finally {
+                        this.echo(String(result));
+                    }
+                }
+            }, {
+                prompt: "> "
+            })
+        },
         pwd: function () {
             this.echo("");
         },
@@ -34,7 +55,7 @@ function commands() {
 }
 
 $(document).ready(() => {
-    $("#terminal").terminal(commands(), {
+    $("body").terminal(commands(), {
         prompt: prompt(),
         greetings: greetings()
     });
