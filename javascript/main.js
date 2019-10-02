@@ -228,11 +228,20 @@ function commands() {
                 prompt: "> "
             })
         },
+        mkdir: function () {
+            this.echo(sorryStatement);
+        },
+        mv: function () {
+            this.echo(sorryStatement);
+        },
         pwd: function () {
             this.echo("Current working directory: [[;#ff00ff;]" + fakePathPrefix + currentWorkingDir + "]");
         },
         reload: function () { // Before reloading, remember to save context.
             reload();
+        },
+        rm: function () {
+            this.echo(sorryStatement);
         },
         set: function (para) {
             let key = para.split(" ")[0];
@@ -256,8 +265,14 @@ function commands() {
                     break;
             }
         },
+        touch: function () {
+            this.echo(sorryStatement);
+        },
         uname: function () {
             this.echo("Linux Ubuntu 4.4.0-18362 GNU/Linux. [[i;#808080;](Just for kidding.)]")
+        },
+        whoami: function () {
+            this.echo(localStorage.getItem("username"));
         }
     }
 }

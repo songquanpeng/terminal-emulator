@@ -16,11 +16,15 @@
 |ls|List contents of current path.|
 |nav|Website navigator.|
 |node|Node.js interpreter.|
+|mkdir|Make a new directory.|
+|mv|Move a file or a directory.|
 |pwd|Print working directory.|
 |reload|Reload page.|
+|rm|Remove file or directory.|
 |set|System setting.|
+|touch|Create a blank file.|
 |uname|Print system info.|
-
+|whoami|Print your username.|
 
 ## Reference
 + https://github.com/jcubic/jquery.terminal
