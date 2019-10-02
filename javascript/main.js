@@ -65,10 +65,12 @@ function prompt() {
     let hostname = localStorage.getItem("hostname");
     let promptText = "[[b;green;]" + username + "@" + hostname + "]:[[b;blue;]/home/" + username + currentWorkingDir + "]$ ";
     let promptOption = localStorage.getItem("prompt");
+    fakePathPrefix = "/home/" + username;
     switch (promptOption) {
         case "default":
             break;
         case "windows":
+            fakePathPrefix = "C:/Users/" + username;
             promptText = "[[b;green;]" + fakePathPrefix + currentWorkingDir + "]> ";
             break;
         case "python":
@@ -181,8 +183,26 @@ function commands() {
             }
         },
         nav: {
+            delete: function (value) {
+                this.echo(sorryStatement);
+            },
+            help: function () {
+                this.echo("[[b;#6600ff;]delete]\tDelete target website.");
+                this.echo("[[b;#6600ff;]list]\tList saved websites.");
+                this.echo("[[b;#6600ff;]open]\tOpen a website by some information that user provided.");
+                this.echo("[[b;#6600ff;]save]\tSave the website extracted from the link user provided. ");
+            },
+            list: function () {
+                let savedDomains = JSON.parse(localStorage.getItem("domains"));
+                const that = this;
+                if (savedDomains !== null) {
+                    savedDomains.forEach(function (item) {
+                        that.echo(item);
+                    });
+                }
+            },
             open: function (keyword) {
-
+                this.echo(sorryStatement);
             },
             save: function (link) {
                 let matchResult = link.toString().match(/https?:\/\/[a-zA-Z0-9\.]*\.[a-zA-Z]*(:[0-9]*)?/);
@@ -201,15 +221,6 @@ function commands() {
                     this.echo("[[;#00ff00;]Domain " + domain + " saved.]");
                 } else {
                     this.echo("[[;#ffff00;]This domain already exists!]");
-                }
-            },
-            list: function () {
-                let savedDomains = JSON.parse(localStorage.getItem("domains"));
-                const that = this;
-                if (savedDomains !== null) {
-                    savedDomains.forEach(function (item) {
-                        that.echo(item);
-                    });
                 }
             }
         },
