@@ -110,7 +110,10 @@ function commands() {
         cd: function (value) {
             let pathTransferArray = [];
             let dirArray = [];
-            if (value === "..") {
+            if (value === "~") {
+                currentWorkingDir = "/";
+                this.set_prompt(prompt());
+            } else if (value === "..") {
                 if (currentWorkingDir === "/") {
                     this.echo("Access denied!");
                 } else {
@@ -119,7 +122,7 @@ function commands() {
                     pathTransferArray.pop();
                     pathTransferArray.pop();
                     currentWorkingDir = (pathTransferArray.join("/") + "/");
-                    reload();
+                    this.set_prompt(prompt());
                 }
             } else {
                 let current = fileSystem;
@@ -137,7 +140,7 @@ function commands() {
                 }
                 if (dirArray.includes(value)) {
                     currentWorkingDir += (value + "/");
-                    reload();
+                    this.set_prompt(prompt());
                 } else {
                     this.echo("No such dir: " + value);
                 }
@@ -249,13 +252,15 @@ function commands() {
             switch (key) {
                 case "username":
                     localStorage.setItem("username", value);
+                    this.set_prompt(prompt());
                     break;
                 case "hostname":
                     localStorage.setItem("hostname", value);
+                    this.set_prompt(prompt());
                     break;
                 case "prompt":
                     localStorage.setItem("prompt", value);
-                    this.echo("[[;green;]Reload the page to apply your setting.]");
+                    this.set_prompt(prompt());
                     break;
                 case "":
                     this.echo("[[;red;]Invalid format!]");
